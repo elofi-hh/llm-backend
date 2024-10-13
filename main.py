@@ -1,4 +1,5 @@
-from flask import Flask, request
+from flask import Flask, Response, request
+import requests
 
 app = Flask(__name__)
 
@@ -24,4 +25,13 @@ def main():
     except ValueError:
         print(f"response was {data}")
         data = random.randint(20000, 70000)
-    return f"{data}"
+
+    url = 'http://192.168.2.1:8080/onboard'
+    myobj = {
+        "threshold": data,
+        "window": 5
+    }
+
+    x = requests.post(url, json = myobj)
+    
+    return Response(status= x.status_code)
